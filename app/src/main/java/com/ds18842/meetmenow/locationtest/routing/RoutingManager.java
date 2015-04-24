@@ -55,7 +55,7 @@ public class RoutingManager implements IMessageHandler {
     }
 
     private Node findNextNode(Packet msg) {
-        ArrayList<Neighbour> neighbors = peerManager.getNeighbors() ;
+        /*ArrayList<Neighbour> neighbors = peerManager.getNeighbors() ;
         Node best = me ; double min_dis = me.getGeoLocation().getDistance(msg.getDst().getGeoLocation()) ;
 
         for (Neighbour neighbor : neighbors) {
@@ -72,8 +72,12 @@ public class RoutingManager implements IMessageHandler {
             return null;
         }
 
-        return best;
+        return best;*/
+
+        return null;
     }
+
+
 
 
 }

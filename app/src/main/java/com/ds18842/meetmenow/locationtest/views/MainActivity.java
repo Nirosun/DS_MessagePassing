@@ -41,6 +41,8 @@ public class MainActivity extends ActionBarActivity {
                 locationChange(pos.getLongitude(), pos.getLongitude(), pos.getTime());
             }
         });
+
+
     }
 
     @Override

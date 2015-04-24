@@ -2,6 +2,8 @@ package com.ds18842.meetmenow.locationtest.network;
 
 
 import android.content.Context;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.util.Log;
 
 import com.ds18842.meetmenow.locationtest.common.IMessageHandler;
 import com.ds18842.meetmenow.locationtest.common.Packet;
@@ -19,6 +21,8 @@ public class NetworkManager implements IMessageHandler {
     private LogicManager app;
     private Node me;
     private IMessageHandler receiver;
+
+    public static final String TAG = "NetworkManager";
 
     public NetworkManager(Context context, LogicManager app, PeerManager peerManager){
         this.context = context ;
@@ -46,21 +50,46 @@ public class NetworkManager implements IMessageHandler {
         //TODO reduce TTL by 1
 
         Node node = msg.getNext() ;
-        Neighbour next = peerManager.getNeighbor(node);
-        IDevice device = next.getDevice() ;
-        ISocket socket = next.getSocket();
+        //Neighbour next = peerManager.getNeighbour(node);
+        Node next = peerManager.getNeighbour(node);
+
+        //WifiP2pDevice device = next.getDevice();
+        //IDevice device = next.getDevice() ;
+        //ISocket socket = next.getSocket();
         //TODO send msg over socket to device
+
+        if (peerManager.getState() != PeerManager.NORMAL) {
+            Log.d(TAG, "In send: State is not NORMAL, return");
+            return;
+        }
+        peerManager.setState(PeerManager.SENDING);
+
+        Log.d(TAG, "In send: Set state to SENDING");
+
+        peerManager.commWithPeer(next);
+
+        Log.d(TAG, "In send: After commWithPeer");
+
     }
 
     @Override
     public void broadcast(Packet msg) {
-        ArrayList<Neighbour> neighbors = peerManager.getNeighbors() ;
+        /*ArrayList<Neighbour> neighbors = peerManager.getNeighbours() ;
         for (Neighbour neighbor : neighbors) {
             if (msg.getPrev().getName().equals(neighbor.getNode().getName())){
                 //Don't broadcast it back to the node you get the message from.
                 continue;
             }
             msg.setHop(me, neighbor.getNode());
+            send(msg);
+        }*/
+        ArrayList<Node> neighbors = peerManager.getNeighbours();
+        for (Node neighbor : neighbors) {
+            if (msg.getPrev().getName().equals(neighbor.getName())){
+                //Don't broadcast it back to the node you get the message from.
+                continue;
+            }
+            msg.setHop(me, neighbor);
             send(msg);
         }
     }

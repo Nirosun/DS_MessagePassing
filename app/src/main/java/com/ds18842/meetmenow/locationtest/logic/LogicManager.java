@@ -16,7 +16,7 @@ public class LogicManager implements IMessageHandler, ILocationHandler {
 
     public LogicManager(Context context) {
         this.context = context ;
-        me = new Node(null, null);
+        me = new Node(null, null, null);
     }
 
     public Node getSelfNode() {
