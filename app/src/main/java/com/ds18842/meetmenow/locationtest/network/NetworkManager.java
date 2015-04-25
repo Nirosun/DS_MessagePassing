@@ -13,6 +13,7 @@ import com.ds18842.meetmenow.locationtest.network.infrastructure.IDevice;
 import com.ds18842.meetmenow.locationtest.network.infrastructure.ISocket;
 import com.ds18842.meetmenow.locationtest.network.infrastructure.Neighbour;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 
 public class NetworkManager implements IMessageHandler {
@@ -21,6 +22,7 @@ public class NetworkManager implements IMessageHandler {
     private LogicManager app;
     private Node me;
     private IMessageHandler receiver;
+    ArrayList<Node> nodes;
 
     public static final String TAG = "NetworkManager";
 
@@ -28,6 +30,7 @@ public class NetworkManager implements IMessageHandler {
         this.context = context ;
         this.peerManager = peerManager ;
         this.app = app ;
+        this.nodes = new ArrayList<>();
         this.me = app.getSelfNode();
     }
 
@@ -58,7 +61,12 @@ public class NetworkManager implements IMessageHandler {
         //ISocket socket = next.getSocket();
         //TODO send msg over socket to device
 
+       // NEW--> EXCHANGE--> NORMAL
+
+        // NORMAL --> SEND --> NORMAL
+
         if (peerManager.getState() != PeerManager.NORMAL) {
+            //Log.d(TAG, "Need to be in Normal state when entering this function ");
             Log.d(TAG, "In send: State is not NORMAL, return");
             return;
         }

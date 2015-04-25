@@ -11,6 +11,14 @@ public class Packet implements Parcelable, Serializable {
     public static final int BROADCAST = 1, LOCATION = 2, EXCHANGE = 3;
     private static int MSG_NUM = 0 ;
 
+    enum PacketType {
+        MULTICAST,
+        //NORMAL,
+        ROUTING,
+        HANDSHAKE,
+        ACK
+    }
+
     private Node src, dst, prev, next ;
     private int id, type, ttl ;
     private String payload ;
@@ -87,5 +95,8 @@ public class Packet implements Parcelable, Serializable {
         //dest.writeList(nodes);
     }
 
-
+    public  String toString()
+    {
+        return getSrc()+ ":" + getDst()+ ":" + getType() + ":" + getId();
+    }
 }
